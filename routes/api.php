@@ -18,8 +18,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/basicinfo', 'App\Http\Controllers\BasicInfoController@getBasicInfo');
+Route::post('/profile', 'App\Http\Controllers\ProfileController@create');
 
-Route::post('/uploadimage', 'App\Http\Controllers\UploadController@UploadImage');
-
-Route::get('/image', 'App\Http\Controllers\ImageController@getImage');
+Route::get('/profile', 'App\Http\Controllers\ProfileController@show');

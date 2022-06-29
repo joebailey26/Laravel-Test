@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Image extends Model
+class Profile extends Model
 {
     use HasFactory;
-    protected $fillable = ['path'];
+    protected $table = 'profiles';
+    protected $fillable = ['name', 'img_path'];
 }

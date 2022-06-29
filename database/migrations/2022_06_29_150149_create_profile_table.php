@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBasicInfoTable extends Migration
+class CreateProfileTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateBasicInfoTable extends Migration
      */
     public function up()
     {
-        Schema::create('basic_infos', function (Blueprint $table) {
+        Schema::create('profiles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('img_path');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateBasicInfoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('basic_infos');
+        Schema::dropIfExists('profiles');
     }
 }

@@ -3,49 +3,38 @@
 
 <template>
   <div>
-    <masthead v-if="name" :name="name"></masthead>
-    <img v-if="imagepath" :src="`storage/app/userpics/${imagepath}`" />
-    <image-uploader></image-uploader>
+    <p v-text="profile.name" />
+    <img
+      v-if="profile.img_path"
+      :src="'/storage/userpics/' + profile.img_path"
+    />
+    <profile-editor></profile-editor>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import masthead from "./components/masthead.vue";
-import imageUploader from "./components/imageUploader.vue";
+import profileEditor from "./components/profileEditor.vue";
 
 export default {
   components: {
-    masthead,
-    imageUploader,
+    profileEditor,
   },
   mounted() {
-    this.getBasicInfo();
-    this.getImagePath();
+    this.getProfile();
   },
   data() {
     return {
-      name: "",
-      imagepath: "",
+      profile: {},
     };
   },
   methods: {
-    getBasicInfo() {
+    getProfile() {
       axios
-        .get("/api/basicinfo")
+        .get("/api/profile")
         .then((response) => {
           console.log(response.data);
-          this.name = response.data.name;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    getImagePath() {
-      axios
-        .get("/api/image")
-        .then((response) => {
-          this.imagepath = response.data.path;
+          this.profile = response.data;
         })
         .catch((error) => {
           console.log(error);
