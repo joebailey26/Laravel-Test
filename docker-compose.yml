@@ -1,0 +1,88 @@
+# --------------------------------------------------------------- #
+# Volker PHP web project                                          #
+# --------------------------------------------------------------- #
+version: "3"
+
+networks:
+  traefik-network:
+    external: true
+  internal:
+    external: false
+
+volumes:
+    mysql-57-volume:
+      labels:
+        - volker.preserve=true
+
+services:
+  
+  
+  
+  app:
+    environment:
+        COMPOSER_BRANCH:  2
+    image: rareloop/volker:php-81
+    tty: true
+    working_dir: /var/www
+    volumes:
+        # Mounts your ssh directory so can checkout rareloop
+        - ~/.ssh:/home/www/.ssh:delegated
+        # Using direct docker mounts
+        - ./:/var/www:delegated
+    expose:
+        - 9000
+    networks:
+        - internal
+    extra_hosts:
+        - laravel-test.volker.test:${HOST_IP} 
+        
+  
+  nginx:
+    image: rareloop/volker:nginx
+    environment:
+      DOCUMENT_ROOT: public
+      APP_URL: laravel-test.volker.test
+      SHARED_URL: # placeholder for when sharing with NGROK
+    tty: true
+    volumes:
+      # Using direct docker mounts
+      - ./:/var/www:delegated
+    expose:
+      - 80
+    networks:
+      - internal
+      - traefik-network
+    # Ensure the app container is up before nginx is started
+    depends_on:
+      - app
+    # Configure with traefik to serve on a domain name
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-network
+      - traefik.http.routers.laravel-test-router.rule=Host(`laravel-test.volker.test`)
+  
+  
+  
+  database:
+    image: mysql/mysql-server:5.7
+    networks:
+        - internal
+    ports:
+        - 3306
+    volumes:
+        - mysql-57-volume:/var/lib/mysql
+    environment:
+        MYSQL_DATABASE: 'laravel-test'
+        MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+        MYSQL_ROOT_PASSWORD:
+        MYSQL_ROOT_HOST: '%'
+  
+  redis:
+    image: redis:latest
+    tty: true
+    networks:
+        - internal
+  
+  
+  
+  

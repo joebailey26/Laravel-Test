@@ -1,0 +1,21 @@
+{
+    "app_url": "laravel-test.volker.test",
+    "composer_version": "2",
+    "cors": false,
+    "cron": false,
+    "database": "mysql-5.7",
+    "document_root": "public",
+    "experimental_file_sync": false,
+    "extra_hosts": "",
+    "horizon": false,
+    "php_version": "php-81",
+    "project_name": "laravel-test",
+    "project_type": "laravel",
+    "redis": true,
+    "scripts": {
+        "coverage": "volker phpcoverage coverage\/html",
+        "dependencies": "volker composer install",
+        "tests": "volker phpunit"
+    },
+    "volker_version": "0.10.1"
+}
