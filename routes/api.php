@@ -19,3 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/basicinfo', 'App\Http\Controllers\BasicInfoController@getBasicInfo');
+
+Route::post('/uploadimage', 'App\Http\Controllers\UploadController@UploadImage');
+
+Route::get('/image', 'App\Http\Controllers\ImageController@getImage');
